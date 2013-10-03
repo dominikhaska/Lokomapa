@@ -16,19 +16,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lFu-8m-efZ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="lFu-8m-efZ">
+                    <rect key="frame" x="0.0" y="0.0" width="319" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="Xay-OQ-1pY"/>
                     </connections>
                 </mapView>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ARJ-wU-ulw">
-                    <rect key="frame" x="99" y="520" width="123" height="29"/>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ARJ-wU-ulw">
+                    <rect key="frame" x="63" y="520" width="195" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
                         <segment title="Stations"/>
-                        <segment title="Trains" width="56"/>
+                        <segment title="Trains"/>
+                        <segment title="Both"/>
                     </segments>
                     <color key="tintColor" red="0.35686274509803922" green="0.5490196078431373" blue="0.66274509803921566" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
@@ -38,7 +39,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="ARJ-wU-ulw" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="99" id="6aM-Ic-Gpc"/>
+                <constraint firstItem="ARJ-wU-ulw" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="36" id="6aM-Ic-Gpc"/>
                 <constraint firstItem="lFu-8m-efZ" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="OsG-EA-M37"/>
                 <constraint firstItem="lFu-8m-efZ" firstAttribute="top" secondItem="1" secondAttribute="top" id="SFa-Qd-rFy"/>
                 <constraint firstItem="ARJ-wU-ulw" firstAttribute="centerX" secondItem="lFu-8m-efZ" secondAttribute="centerX" id="V0n-RL-9p2"/>

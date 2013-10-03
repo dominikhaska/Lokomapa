@@ -13,7 +13,10 @@
     BOOL isAnimated;
 }
 
+@property (assign, nonatomic) BOOL isRed;
+
 -(void)prepareCustomViewWithTitle:(NSString*)title;
 -(void)animateWithDelay:(CFTimeInterval)delay;
 -(void)hideWithDelay:(CFTimeInterval)delay;
+
 @end

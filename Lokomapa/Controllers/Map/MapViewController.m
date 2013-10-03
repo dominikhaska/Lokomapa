@@ -34,8 +34,8 @@
 }
 
 
-- (void)getStations:(MKMapView *)mapView {
-    if (self.lastTask) {
+- (void)getStations:(MKMapView *)mapView andRemoveTrains:(BOOL)removeTrains{
+    if (self.lastTask && removeTrains == YES) {
         [self.lastTask cancel];
     }
     
@@ -44,7 +44,8 @@
             
             NSMutableDictionary *annotationsDictionary = [NSMutableDictionary dictionaryWithCapacity:mapView.annotations.count];
             for (StationAnnotation *annotation in mapView.annotations) {
-                annotationsDictionary[annotation.station.externalId] = annotation;
+                if ([annotation isKindOfClass:[StationAnnotation class]])
+                    annotationsDictionary[annotation.station.externalId] = annotation;
             }
             
             
@@ -59,15 +60,18 @@
             }
             
             for (id key in [annotationsDictionary allKeys]) {
-                [mapView removeAnnotation:annotationsDictionary[key]];
+                if (removeTrains == NO && [annotationsDictionary[key] isKindOfClass:[TrainAnnotation class]]) {
+                    continue;
+                }
+//                [mapView removeAnnotation:annotationsDictionary[key]];
             }
         });
     }];
     self.lastTask = task;
 }
 
-- (void)getTrains:(MKMapView *)mapView {
-    if (self.lastTask) {
+- (void)getTrains:(MKMapView *)mapView andRemoveStations:(BOOL)removeStations{
+    if (self.lastTask && removeStations == YES) {
         [self.lastTask cancel];
     }
     
@@ -79,7 +83,6 @@
                 if ([annotation isKindOfClass:[TrainAnnotation class]])
                     annotationsDictionary[[(TrainAnnotation*)annotation train].name] = annotation;
             }
-            
             
             for (Train *train in trains) {
                 if ([[annotationsDictionary allKeys] containsObject:train.name]) {
@@ -93,11 +96,19 @@
             }
             
             for (id key in [annotationsDictionary allKeys]) {
-                [mapView removeAnnotation:annotationsDictionary[key]];
+                if (removeStations == NO && [annotationsDictionary[key] isKindOfClass:[StationAnnotation class]]) {
+                    continue;
+                }
+//                [mapView removeAnnotation:annotationsDictionary[key]];
             }
         });
     }];
     self.lastTask = task;
+}
+
+-(void)getStationsAndTrains:(MKMapView *)mapView{
+    [self getStations:mapView andRemoveTrains:NO];
+    [self getTrains:mapView andRemoveStations:NO];
 }
 
 #pragma mark - MapView
@@ -108,13 +119,17 @@
     if (mapView.region.span.latitudeDelta < 0.7f) {
         switch (self.stationsTrainsSegmentedControl.selectedSegmentIndex) {
             case 0: {
-                [self getStations:mapView];
+                [self getStations:mapView andRemoveTrains:YES];
                 break;
             }
                 
             case 1: {
-                [self getTrains:mapView];
+                [self getTrains:mapView andRemoveStations:YES];
                 break;
+            }
+                
+            case 2:{
+                [self getStationsAndTrains:mapView];
             }
                 
             default:
@@ -145,6 +160,7 @@
     }
     else if ([annotation isKindOfClass:[TrainAnnotation class]]) {
         StationAnnotationView *view = [[StationAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:[(TrainAnnotation*)annotation train].name];
+        view.isRed = YES;
         [view prepareCustomViewWithTitle:[(TrainAnnotation*)annotation train].name];
         return view;
     }
@@ -196,7 +212,9 @@
 #pragma mark - IB methods
 
 - (IBAction)handleStationsTrainSwitchChange:(UISegmentedControl *)sender {
-    [self.mapView removeAnnotations:self.mapView.annotations];
+    if (sender.selectedSegmentIndex != 2) {
+        [self.mapView removeAnnotations:self.mapView.annotations];
+    }
     [self mapView:self.mapView regionDidChangeAnimated:NO];
 }
 

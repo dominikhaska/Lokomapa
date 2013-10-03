@@ -28,7 +28,10 @@
 -(void)prepareCustomViewWithTitle:(NSString*)title {
     circleLayer = [CAShapeLayer layer];
     circleLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, 20, 20)].CGPath;
-    circleLayer.fillColor = RGBA(90, 140, 169, 1.0).CGColor;
+    if (self.isRed)
+        circleLayer.fillColor = [UIColor redColor].CGColor;
+    else
+        circleLayer.fillColor = RGBA(90, 140, 169, 1.0).CGColor;
     circleLayer.strokeColor = [UIColor whiteColor].CGColor;
     circleLayer.lineWidth = 1.0f;
     [self.layer addSublayer:circleLayer];
@@ -42,7 +45,10 @@
     
     labelBackground = [CAShapeLayer layer];
     labelBackground.path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, 20, 20) cornerRadius:10].CGPath;
-    labelBackground.fillColor = RGBA(90, 140, 169, 0.9).CGColor;
+    if (self.isRed)
+        labelBackground.fillColor = [UIColor redColor].CGColor;
+    else
+        labelBackground.fillColor = RGBA(90, 140, 169, 0.9).CGColor;
     [self.layer insertSublayer:labelBackground below:circleLayer];
     
     [self setSmallerTouchView];
